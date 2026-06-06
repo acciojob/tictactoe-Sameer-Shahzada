@@ -1,15 +1,18 @@
 const submitBtn = document.getElementById("submit");
 
-submitBtn.addEventListener("click", function () {
+submitBtn.addEventListener("click", () => {
     const player1 = document.getElementById("player1").value;
     const player2 = document.getElementById("player2").value;
 
-    document.querySelector(".container").innerHTML += `
-        <div class="message">${player1}, you're up</div>
-        <div id="board"></div>
-    `;
+    const message = document.createElement("div");
+    message.className = "message";
+    message.textContent = `${player1}, you're up`;
 
-    const board = document.getElementById("board");
+    const board = document.createElement("div");
+    board.id = "board";
+
+    document.body.appendChild(message);
+    document.body.appendChild(board);
 
     let currentPlayer = "x";
     let currentName = player1;
@@ -21,14 +24,14 @@ submitBtn.addEventListener("click", function () {
         cell.id = i;
         board.appendChild(cell);
 
-        cell.addEventListener("click", function () {
+        cell.addEventListener("click", () => {
             if (state[i - 1] !== "") return;
 
             state[i - 1] = currentPlayer;
             cell.textContent = currentPlayer;
 
             if (checkWinner(state, currentPlayer)) {
-                document.querySelector(".message").textContent =
+                message.textContent =
                     `${currentName} congratulations you won!`;
                 return;
             }
@@ -41,8 +44,7 @@ submitBtn.addEventListener("click", function () {
                 currentName = player1;
             }
 
-            document.querySelector(".message").textContent =
-                `${currentName}, you're up`;
+            message.textContent = `${currentName}, you're up`;
         });
     }
 });
